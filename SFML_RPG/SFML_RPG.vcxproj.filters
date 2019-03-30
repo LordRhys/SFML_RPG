@@ -91,4 +91,9 @@
       <Filter>Fonts</Filter>
     </Font>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Images\Backgrounds\bg1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

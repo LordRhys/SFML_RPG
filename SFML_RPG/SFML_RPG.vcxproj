@@ -149,6 +149,9 @@
     <Font Include="Fonts\CelticHand.ttf" />
     <Font Include="Fonts\consola.ttf" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Images\Backgrounds\bg1.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
