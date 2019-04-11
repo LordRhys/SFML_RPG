@@ -24,15 +24,15 @@ void GameState::initKeybinds()
 
 void GameState::initTextures()
 {
-  if (!this->textures["PLAYER_IDLE"].loadFromFile("Resources/Images/Sprites/Player/test.png"))
+  if (!this->textures["PLAYER_SHEET"].loadFromFile("Resources/Images/Sprites/Player/Idle_Left.png"))
   {
-  	throw("ERROR::MAIN_MENU_STATE::FAILERD TO LOAD SPRITE TEXTURE");
+  	throw("ERROR::MAIN_MENU_STATE::FAILED TO LOAD SPRITE TEXTURE");
   }
 }
 
 void GameState::initPlayers()
 {
-  this->player = new Player(0, 0, this->textures["PLAYER_IDLE"]);
+  this->player = new Player(0, 0, this->textures["PLAYER_SHEET"]);
 }
 
 // Constructors / Destructors
@@ -54,13 +54,13 @@ void GameState::updateInput(const float & dt)
 {
   // Update player input
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_LEFT"))))
-    this->player->move(dt, -1.0f, 0.0f);
+    this->player->move(-1.0f, 0.0f, dt);
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_RIGHT"))))
-    this->player->move(dt, 1.0f, 0.0f);
+    this->player->move(1.0f, 0.0f, dt);
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_UP"))))
-    this->player->move(dt, 0.0f, -1.0f);
+    this->player->move(0.0f, -1.0f, dt);
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_DOWN"))))
-    this->player->move(dt, 0.0f, 1.0f);
+    this->player->move(0.0f, 1.0f, dt);
 
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CLOSE"))))
     this->endState();
