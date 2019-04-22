@@ -125,5 +125,8 @@
     <Image Include="Resources\Images\Sprites\Player\Idle_Right.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Resources\Images\Sprites\Player\PLAYER_SHEET.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

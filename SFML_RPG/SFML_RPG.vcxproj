@@ -159,6 +159,7 @@
     <Image Include="Resources\Images\Backgrounds\bg1.png" />
     <Image Include="Resources\Images\Sprites\Player\Idle_Left.png" />
     <Image Include="Resources\Images\Sprites\Player\Idle_Right.png" />
+    <Image Include="Resources\Images\Sprites\Player\PLAYER_SHEET.png" />
     <Image Include="Resources\Images\Sprites\Player\test.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
