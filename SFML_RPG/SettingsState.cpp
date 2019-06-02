@@ -48,11 +48,23 @@ void SettingsState::initKeybinds()
   ifs.close();
 }
 
-void SettingsState::initButtons()
+void SettingsState::initGui()
 {
-  this->buttons["EXIT_STATE"] = new Button(300, 825, 150, 50, &this->font, "QUIT", 50,
+  this->buttons["BACK"] = new gui::Button(
+    1500.f, 880.f, 250.f, 50.f,
+    &this->font, "Back", 50,
     sf::Color(100, 100, 100, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
     sf::Color(100, 100, 100, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));
+
+  this->buttons["APPLY"] = new gui::Button(
+    1300.f, 880.f, 250.f, 50.f,
+    &this->font, "Apply", 50,
+    sf::Color(100, 100, 100, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
+    sf::Color(100, 100, 100, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));
+
+  std::string li[] = { "1920x1080", "800x600", "640x480" };
+
+  this->dropDownLists["RESOLUTION"] = new gui::DropDownList(800, 450, 200, 50, font, li, 3);
 }
 
 SettingsState::SettingsState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states)
@@ -62,7 +74,7 @@ SettingsState::SettingsState(sf::RenderWindow* window, std::map<std::string, int
   this->initBackground();
   this->initFonts();
   this->initKeybinds();
-  this->initButtons();
+  this->initGui();
 }
 
 SettingsState::~SettingsState()
@@ -72,6 +84,13 @@ SettingsState::~SettingsState()
   {
     delete it->second;
   }
+
+  auto it2 = this->dropDownLists.begin();
+  for (it2 = this->dropDownLists.begin(); it2 != this->dropDownLists.end(); ++it2)
+  {
+    delete it2->second;
+  }
+  
 }
 
 //Accessors
@@ -82,21 +101,35 @@ void SettingsState::updateInput(const float& dt)
 
 }
 
-void SettingsState::updateButtons()
+void SettingsState::updateGui(const float& dt)
 {
-  // Updates all the buttons in the state and handles their functionality. 
+  // Updates all the gui elements in the state and handles their functionality.
+  // Buttons
   for (auto& it : this->buttons)
   {
     it.second->update(this->mousePosView);
   }
 
-  // Settings
-
+  // Button Functionality
   // Quit the game
-  if (this->buttons["EXIT_STATE"]->isPressed())
+  if (this->buttons["BACK"]->isPressed())
   {
     this->endState();
   }
+
+  // Apply selected settings
+  if (this->buttons["APPLY"]->isPressed())
+  {
+    
+  }
+
+  // Dropdown Lists
+  for (auto& it : this->dropDownLists)
+  {
+    it.second->update(this->mousePosView, dt);
+  }
+
+  // Dropdown List Functionality
 }
 
 void SettingsState::update(const float& dt)
@@ -104,14 +137,17 @@ void SettingsState::update(const float& dt)
   this->updateMousePositions();
   this->updateInput(dt);
 
-  this->updateButtons();
-
-
+  this->updateGui(dt);  
 }
 
-void SettingsState::renderButtons(sf::RenderTarget& target)
+void SettingsState::renderGui(sf::RenderTarget& target)
 {
   for (auto& it : this->buttons)
+  {
+    it.second->render(target);
+  }
+
+  for (auto& it : this->dropDownLists)
   {
     it.second->render(target);
   }
@@ -124,10 +160,12 @@ void SettingsState::render(sf::RenderTarget* target)
 
   target->draw(this->background);
 
-  this->renderButtons(*target);
+  this->renderGui(*target);
+
+  
 
   // REMOVE LATER!
-  /*sf::Text mouseText;
+  sf::Text mouseText;
   mouseText.setPosition(this->mousePosView.x, this->mousePosView.y - 50);
   mouseText.setFont(this->font);
   mouseText.setCharacterSize(12);
@@ -135,6 +173,6 @@ void SettingsState::render(sf::RenderTarget* target)
   ss << this->mousePosView.x << " " << this->mousePosView.y;
   mouseText.setString(ss.str());
 
-  target->draw(mouseText);*/
+  target->draw(mouseText);
 }
 
