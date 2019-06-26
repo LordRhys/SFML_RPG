@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "Gui.h"
 
 // ============== BUTTON ====================
@@ -186,6 +187,11 @@ const bool gui::DropDownList::getKeyTime()
   }
 
   return false;
+}
+
+const unsigned short& gui::DropDownList::getActiveElementId() const
+{
+  return this->activeElement->getId();
 }
 
 // Functions

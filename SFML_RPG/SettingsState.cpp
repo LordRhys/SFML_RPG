@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "SettingsState.h"
 
 
@@ -5,7 +6,7 @@
 // Initializer Functions
 void SettingsState::initVariables()
 {
-
+  this->modes = sf::VideoMode::getFullscreenModes();
 }
 
 void SettingsState::initBackground()
@@ -62,19 +63,38 @@ void SettingsState::initGui()
     sf::Color(100, 100, 100, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
     sf::Color(100, 100, 100, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0));
 
-  std::string li[] = { "1920x1080", "800x600", "640x480" };
+  std::vector<std::string> modes_str;
+  for (auto &i : this->modes)
+  {
+    modes_str.push_back(std::to_string(i.width) + 'x' + std::to_string(i.height));
+  }
 
-  this->dropDownLists["RESOLUTION"] = new gui::DropDownList(800, 450, 200, 50, font, li, 3);
+  this->dropDownLists["RESOLUTION"] = new gui::DropDownList(800, 450, 200, 50, font, modes_str.data(), modes_str.size());
 }
 
-SettingsState::SettingsState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states)
-  : State(window, supportedKeys, states)
+void SettingsState::initText()
+{
+  this->optionsText.setFont(this->font);
+
+  this->optionsText.setPosition(sf::Vector2f(600.f, 460.f));
+
+  this->optionsText.setCharacterSize(30);
+  this->optionsText.setFillColor(sf::Color(255, 255, 255, 200));
+
+
+  this->optionsText.setString("Resolution \n\nFullscreen \n\nVsync \n\nAntialiasing \n\n ");
+}
+
+SettingsState::SettingsState(sf::RenderWindow* window, GraphicsSettings& gfxSettings, std::map<std::string, 
+                             int>* supportedKeys, std::stack<State*>* states)
+  : State(window, supportedKeys, states), gfxSettings(gfxSettings)
 {
   this->initVariables();
   this->initBackground();
   this->initFonts();
   this->initKeybinds();
   this->initGui();
+  this->initText();
 }
 
 SettingsState::~SettingsState()
@@ -120,7 +140,9 @@ void SettingsState::updateGui(const float& dt)
   // Apply selected settings
   if (this->buttons["APPLY"]->isPressed())
   {
-    
+    // TEST --- REMOVE Later
+    this->gfxSettings.resolution = this->modes[this->dropDownLists["RESOLUTION"]->getActiveElementId()];
+    this->window->create(this->gfxSettings.resolution, this->gfxSettings.title, sf::Style::Default);
   }
 
   // Dropdown Lists
@@ -162,7 +184,7 @@ void SettingsState::render(sf::RenderTarget* target)
 
   this->renderGui(*target);
 
-  
+  target->draw(this->optionsText);
 
   // REMOVE LATER!
   sf::Text mouseText;
