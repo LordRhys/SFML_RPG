@@ -9,6 +9,8 @@ void Game::initVariables()
   this->window = nullptr;
 
   this->dt = 0.0f;
+
+  this->gridSize = 100.f;
 }
 
 void Game::initGraphicSettings()
@@ -59,9 +61,18 @@ void Game::initKeys()
   }*/
 }
 
+void Game::initStateData()
+{
+  this->stateData.window = this->window;
+  this->stateData.gfxSettings = &this->gfxSettings;
+  this->stateData.supportedKeys = &this->supportedKeys;
+  this->stateData.states = &this->states;
+  this->stateData.gridSize = this->gridSize;
+}
+
 void Game::initStates()
 {
-  this->states.push(new MainMenuState(this->window, this->gfxSettings, &this->supportedKeys, &this->states));  
+  this->states.push(new MainMenuState(&this->stateData));
 }
 
 
@@ -72,6 +83,7 @@ Game::Game()
   this->initGraphicSettings();
   this->initWindow();
   this->initKeys();
+  this->initStateData();
   this->initStates();  
 }
 
@@ -107,7 +119,6 @@ void Game::updateDT()
 
 void Game::updateSFMLEvents()
 {
-  sf::Event event;
   while (this->window->pollEvent(this->sfEvent))
   {
     if (this->sfEvent.type == sf::Event::Closed)
