@@ -188,5 +188,11 @@
     <Image Include="Resources\Images\Sprites\Player\PLAYER_SHEET.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Resources\Images\Tiles\grass1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Images\Tiles\tilesheet1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
